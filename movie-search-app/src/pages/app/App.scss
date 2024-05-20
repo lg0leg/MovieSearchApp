@@ -1,0 +1,33 @@
+@import '../../utils/colors.scss';
+
+.app {
+  color: $pr5;
+  display: grid;
+  grid-template-columns: 28fr 116fr;
+  background-color: $gr1;
+}
+
+.sidebar {
+  background-color: $pr1;
+  padding: 24px;
+}
+
+.logo {
+  display: flex;
+  gap: 12px;
+}
+
+.title {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 36px;
+}
+
+.app-nav {
+  display: grid;
+}
+.nav-item {
+  text-decoration: none;
+}
