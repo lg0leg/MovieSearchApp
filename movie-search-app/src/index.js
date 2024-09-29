@@ -13,6 +13,7 @@ const theme = createTheme({
     md: rem(16),
     lg: rem(18),
     xl: rem(20),
+    xxl: rem(22),
   },
   // primaryColor: 'purple',
   colors: {

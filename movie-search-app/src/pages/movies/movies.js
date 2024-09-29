@@ -1,5 +1,6 @@
-import { Container, Flex, Select, Title } from '@mantine/core';
+import { Button, Container, Flex, Select, Space, Title } from '@mantine/core';
 import React, { useEffect, useState } from 'react';
+import './movies.scss';
 
 const options = {
   method: 'GET',
@@ -50,13 +51,17 @@ export default function Movies() {
   const years = Array.from({ length: 100 }, (_, index) => String(2024 - index));
 
   return (
-    <Container style={{ paddingLeft: 90, paddingRight: 90, paddingTop: 40, margin: 0 }}>
+    <Container fluid style={{ paddingLeft: 90, paddingRight: 90, paddingTop: 40, margin: 0 }}>
       <Title order={1}>Movies</Title>
-      <Flex gap="16">
-        <Select label="Genres" placeholder="Select genre" data={genresList.map((val) => val.name)} value={genres} onChange={setGenres} />
-        <Select label="Release year" placeholder="Select release year" data={years} value={releaseYear} onChange={setReleaseYear} />
-        <Select label="Ratings" placeholder="From" data={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']} value={ratingFrom} onChange={setRatingFrom} />
-        <Select label=" " placeholder="To" data={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']} value={ratingTo} onChange={setRatingTo} />
+      <Space h="40" />
+      <Flex gap="16" wrap="wrap" align="flex-end">
+        <Select className="filter-title" label="Genres" placeholder="Select genre" data={genresList.map((val) => val.name)} value={genres} onChange={setGenres} />
+        <Select className="filter-title" label="Release year" placeholder="Select release year" data={years} value={releaseYear} onChange={setReleaseYear} />
+        <Select className="filter-title" label="Ratings" placeholder="From" data={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']} value={ratingFrom} onChange={setRatingFrom} />
+        <Select className="filter-title" label=" " placeholder="To" data={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']} value={ratingTo} onChange={setRatingTo} />
+        <Button pb={10} variant="transparent" color="rgb(123, 124, 136)">
+          Reset filters
+        </Button>
       </Flex>
       <ul>
         {moviesInfo.map((item, idx) => (
