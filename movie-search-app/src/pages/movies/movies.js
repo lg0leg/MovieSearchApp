@@ -40,13 +40,17 @@ export default function Movies() {
     setGenresList(data.genres);
   };
 
+  const resetFilters = () => {
+    setGenres(null);
+    setReleaseYear(null);
+    setRatingFrom(null);
+    setRatingTo(null);
+    setSort('popularity.desc');
+  };
+
   useEffect(() => {
     getGenres();
   }, []);
-
-  // useEffect(() => {
-  //   console.log(sort);
-  // }, [sort]);
 
   useEffect(() => {
     getMovies();
@@ -70,7 +74,7 @@ export default function Movies() {
           onChange={setRatingFrom}
         />
         <Select className="filter-title filter-title-short" label=" " placeholder="To" data={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']} value={ratingTo} onChange={setRatingTo} />
-        <Button pb={10} variant="transparent" color="rgb(123, 124, 136)">
+        <Button pb={10} variant="transparent" color="rgb(123, 124, 136)" onClick={resetFilters}>
           Reset filters
         </Button>
       </Flex>
