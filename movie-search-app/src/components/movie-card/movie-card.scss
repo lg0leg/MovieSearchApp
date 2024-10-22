@@ -1,0 +1,31 @@
+.movie-card {
+  padding: 24px;
+  display: flex;
+  gap: 16px;
+  background-color: #fff;
+  border-radius: 10px;
+
+  p {
+    margin: 0;
+  }
+}
+
+.movie-image {
+  width: 30%;
+}
+
+.movie-card-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.movie-card-title {
+  margin: 0;
+}
+
+.movie-rating {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}

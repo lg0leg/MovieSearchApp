@@ -1,6 +1,7 @@
 import { Button, Container, Flex, Select, Space, Title } from '@mantine/core';
 import React, { useEffect, useState } from 'react';
 import './movies.scss';
+import FilmList from '../../components/film-list/film-list';
 
 const options = {
   method: 'GET',
@@ -91,13 +92,7 @@ export default function Movies() {
           onChange={(_value, option) => setSort(option.value)}
         />
       </Flex>
-      <ul>
-        {moviesInfo.map((item, idx) => (
-          <li key={idx}>
-            <p>{item.original_title}</p>
-          </li>
-        ))}
-      </ul>
+      <FilmList moviesInfo={moviesInfo} genresList={genresList}></FilmList>
     </Container>
   );
 }
