@@ -1,4 +1,4 @@
-import { Button, Container, Flex, Select, Space, Title } from '@mantine/core';
+import { Button, Container, Flex, Pagination, Select, Space, Title } from '@mantine/core';
 import React, { useEffect, useState } from 'react';
 import './movies.scss';
 import FilmList from '../../components/film-list/film-list';
@@ -18,7 +18,8 @@ export default function Movies() {
   const [ratingFrom, setRatingFrom] = useState('');
   const [ratingTo, setRatingTo] = useState('');
 
-  const [page, setPage] = useState('1');
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [sort, setSort] = useState('popularity.desc');
 
   const [moviesInfo, setMoviesInfo] = useState([]);
@@ -32,6 +33,7 @@ export default function Movies() {
     let query = `${baseURL}&page=${page}${year}&sort_by=${sort}${rf}${rt}${gens}`;
     let resp = await fetch(query, options);
     let data = await resp.json();
+    setTotalPages(data.total_pages);
     setMoviesInfo(data.results);
   };
 
@@ -55,7 +57,7 @@ export default function Movies() {
 
   useEffect(() => {
     getMovies();
-  }, [genres, releaseYear, ratingFrom, ratingTo, sort]);
+  }, [genres, releaseYear, ratingFrom, ratingTo, sort, page]);
 
   const years = Array.from({ length: 100 }, (_, index) => String(2024 - index));
 
@@ -93,6 +95,8 @@ export default function Movies() {
         />
       </Flex>
       <FilmList moviesInfo={moviesInfo} genresList={genresList}></FilmList>
+      <Pagination size={'lg'} defaultValue="1" radius="sm" color="rgb(152, 84, 246)" value={page} onChange={setPage} total={totalPages} />
+      <Space h="20" />
     </Container>
   );
 }
