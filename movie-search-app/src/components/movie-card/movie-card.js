@@ -4,9 +4,10 @@ import star from '../../assets/svg/star.svg';
 import { Space } from '@mantine/core';
 
 export default function MovieCard({ info, genres }) {
+  //получение названий жанров из списка id отдельного фильма
   let genreTitles = info.genre_ids
     .map((genID) => genres.find((obj) => obj.id === genID))
-    .map((val) => val.name)
+    .map((val) => val?.name || '')
     .join(', ');
 
   return (

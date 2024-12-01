@@ -24,6 +24,7 @@ export default function Movies() {
 
   const [moviesInfo, setMoviesInfo] = useState([]);
 
+  //получение информации о фильмах с учетом фильтров, 20 штук на страницу
   const getMovies = async () => {
     const baseURL = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US';
     let year = releaseYear ? `&primary_release_year=${releaseYear}` : '';
@@ -31,16 +32,25 @@ export default function Movies() {
     let rt = ratingTo ? `&vote_average.lte=${ratingTo}` : '';
     let gens = genres ? `&with_genres=${genresList.find((val) => val.name === genres).id}` : '';
     let query = `${baseURL}&page=${page}${year}&sort_by=${sort}${rf}${rt}${gens}`;
-    let resp = await fetch(query, options);
-    let data = await resp.json();
-    setTotalPages(data.total_pages);
-    setMoviesInfo(data.results);
+    try {
+      let resp = await fetch(query, options);
+      let data = await resp.json();
+      data.total_pages > 500 ? setTotalPages(500) : setTotalPages(data.total_pages);
+      setMoviesInfo(data.results);
+    } catch (error) {
+      console.log('Невозможно получить данные о  фильмах!\n' + error);
+    }
   };
 
+  // получение массива доступных жанров вида {"id": 28,"name": "Action"}
   const getGenres = async () => {
-    let resp = await fetch('https://api.themoviedb.org/3/genre/movie/list?language=en', options);
-    let data = await resp.json();
-    setGenresList(data.genres);
+    try {
+      let resp = await fetch('https://api.themoviedb.org/3/genre/movie/list?language=en', options);
+      let data = await resp.json();
+      setGenresList(data.genres);
+    } catch (error) {
+      console.log('Невозможно получить список жанров!\n' + error);
+    }
   };
 
   const resetFilters = () => {
