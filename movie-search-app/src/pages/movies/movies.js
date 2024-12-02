@@ -1,6 +1,7 @@
 import { Button, Container, Flex, Pagination, Select, Space, Title } from '@mantine/core';
 import React, { useEffect, useState } from 'react';
 import './movies.scss';
+import lookfor from '../../assets/svg/lookfor.svg';
 import FilmList from '../../components/film-list/film-list';
 
 const options = {
@@ -104,9 +105,21 @@ export default function Movies() {
           onChange={(_value, option) => setSort(option.value)}
         />
       </Flex>
-      <FilmList moviesInfo={moviesInfo} genresList={genresList}></FilmList>
-      <Pagination size={'lg'} defaultValue="1" radius="sm" color="rgb(152, 84, 246)" value={page} onChange={setPage} total={totalPages} />
-      <Space h="20" />
+      {moviesInfo.length > 0 ? (
+        <>
+          <FilmList moviesInfo={moviesInfo} genresList={genresList}></FilmList>
+          <Pagination size={'lg'} defaultValue="1" radius="sm" color="rgb(152, 84, 246)" value={page} onChange={setPage} total={totalPages} />
+          <Space h="20" />
+        </>
+      ) : (
+        <>
+          <Space h="40" />
+          <Flex gap="16" justify="center" align="center" direction="column">
+            <img src={lookfor} alt="We don't have such movies, look for another one" />
+            <p>We don't have such movies, look for another one</p>
+          </Flex>
+        </>
+      )}
     </Container>
   );
 }
