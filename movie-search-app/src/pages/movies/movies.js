@@ -3,13 +3,11 @@ import React, { useEffect, useState } from 'react';
 import './movies.scss';
 import lookfor from '../../assets/svg/lookfor.svg';
 import FilmList from '../../components/film-list/film-list';
+import { headers } from '../../utils/api';
 
 const options = {
   method: 'GET',
-  headers: {
-    accept: 'application/json',
-    Authorization: `Bearer ${process.env.REACT_APP_TMD_API_KEY}`,
-  },
+  headers: headers,
 };
 
 export default function Movies() {
