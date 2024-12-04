@@ -1,16 +1,34 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './movie-card.scss';
 import star from '../../assets/svg/star.svg';
 import { Space } from '@mantine/core';
 import Star from '../star/star';
+import { FavContext } from '../../state/state';
 
 export default function MovieCard({ info, genres }) {
-  const [favorite, setFavorite] = useState(false);
   // console.log(info.id);
+  const favContext = useContext(FavContext);
+
+  const [favorite, setFavorite] = useState(false);
+
+  const checkFavorites = () => {
+    if (favContext.favState.favorites.includes(info.id)) {
+      setFavorite(true);
+    }
+  };
+
+  useEffect(checkFavorites, []);
 
   const favoriteHandler = () => {
-    // console.log('click');
-    setFavorite(!favorite);
+    if (favContext.favState.favorites.includes(info.id)) {
+      setFavorite(false);
+      favContext.favDispatch({ type: 'REMOVE_FROM_FAVORITES', payload: info.id });
+      // console.log('del ' + info.id);
+    } else {
+      setFavorite(true);
+      favContext.favDispatch({ type: 'ADD_TO_FAVORITES', payload: info.id });
+      // console.log('add ' + info.id);
+    }
   };
 
   //получение названий жанров из списка id отдельного фильма

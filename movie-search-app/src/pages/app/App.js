@@ -5,8 +5,12 @@ import NotFoundPage from '../404/404';
 import RatedMovies from '../rated-movies/rated-movies';
 import Movies from '../movies/movies';
 import { AppShell, Flex, Space, Title } from '@mantine/core';
+import { useReducer } from 'react';
+import { favReducer, initialFavState, FavContext } from '../../state/state';
 
 function App() {
+  const [favState, favDispatch] = useReducer(favReducer, initialFavState);
+
   return (
     <AppShell navbar={{ width: 280 }} main={{ width: 1160 }} withBorder={false}>
       <AppShell.Navbar style={{ padding: '24px', backgroundColor: '#f2ecfa' }}>
@@ -30,7 +34,14 @@ function App() {
       </AppShell.Navbar>
       <AppShell.Main style={{ backgroundColor: '#f5f5f6' }}>
         <Routes>
-          <Route path="movies" element={<Movies />} />
+          <Route
+            path="movies"
+            element={
+              <FavContext.Provider value={{ favDispatch, favState }}>
+                <Movies />
+              </FavContext.Provider>
+            }
+          />
           <Route path="rated-movies" element={<RatedMovies />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
