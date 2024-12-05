@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import './movie-card.scss';
 import star from '../../assets/svg/star.svg';
+import noPoster from '../../assets/png/noPoster.png';
 import { Space } from '@mantine/core';
 import Star from '../star/star';
 import { FavContext } from '../../state/state';
@@ -39,7 +40,8 @@ export default function MovieCard({ info, genres }) {
 
   return (
     <div className="movie-card">
-      <img className="movie-image" src={`https://image.tmdb.org/t/p/original/${info.poster_path}`} alt={`${info.original_title} poster`} />
+      {/* <img className="movie-image" src={`https://image.tmdb.org/t/p/original/${info.poster_path}`} alt={`${info.original_title} poster`} /> */}
+      <img className="movie-image" src={noPoster} alt="noPoster" />
       <div className="movie-card-inner">
         <h2 className="movie-card-title">{info.original_title}</h2>
         <p>{info.release_date.slice(0, 4)}</p>
