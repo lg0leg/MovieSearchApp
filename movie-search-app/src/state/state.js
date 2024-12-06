@@ -1,7 +1,7 @@
 import { createContext } from 'react';
 
 export const initialFavState = {
-  favorites: [],
+  favorites: JSON.parse(localStorage.getItem('favorites')) || [],
 };
 
 export const favReducer = (favState, action) => {

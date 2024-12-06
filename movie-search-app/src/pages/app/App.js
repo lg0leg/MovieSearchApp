@@ -5,11 +5,15 @@ import NotFoundPage from '../404/404';
 import RatedMovies from '../rated-movies/rated-movies';
 import Movies from '../movies/movies';
 import { AppShell, Flex, Space, Title } from '@mantine/core';
-import { useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
 import { favReducer, initialFavState, FavContext } from '../../state/state';
 
 function App() {
   const [favState, favDispatch] = useReducer(favReducer, initialFavState);
+
+  useEffect(() => {
+    localStorage.setItem('favorites', JSON.stringify(favState.favorites));
+  }, [favState]);
 
   return (
     <AppShell navbar={{ width: 280 }} main={{ width: 1160 }} withBorder={false}>
