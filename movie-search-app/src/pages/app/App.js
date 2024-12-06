@@ -12,7 +12,7 @@ function App() {
   const [favState, favDispatch] = useReducer(favReducer, initialFavState);
 
   useEffect(() => {
-    localStorage.setItem('favorites', JSON.stringify(favState.favorites));
+    localStorage.setItem('favoritesId', JSON.stringify(favState.favoritesId));
   }, [favState]);
 
   return (
@@ -37,18 +37,13 @@ function App() {
         </Flex>
       </AppShell.Navbar>
       <AppShell.Main style={{ backgroundColor: '#f5f5f6' }}>
-        <Routes>
-          <Route
-            path="movies"
-            element={
-              <FavContext.Provider value={{ favDispatch, favState }}>
-                <Movies />
-              </FavContext.Provider>
-            }
-          />
-          <Route path="rated-movies" element={<RatedMovies />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
+        <FavContext.Provider value={{ favDispatch, favState }}>
+          <Routes>
+            <Route path="movies" element={<Movies />} />
+            <Route path="rated-movies" element={<RatedMovies />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </FavContext.Provider>
       </AppShell.Main>
     </AppShell>
   );

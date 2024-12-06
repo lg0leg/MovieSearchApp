@@ -1,15 +1,16 @@
 import { createContext } from 'react';
 
 export const initialFavState = {
-  favorites: JSON.parse(localStorage.getItem('favorites')) || [],
+  favoritesId: JSON.parse(localStorage.getItem('favoritesId')) || [],
 };
 
 export const favReducer = (favState, action) => {
   switch (action.type) {
-    case 'ADD_TO_FAVORITES':
-      return { ...favState, ...favState.favorites.push(action.payload) };
-    case 'REMOVE_FROM_FAVORITES':
-      return { ...favState, favorites: favState.favorites.filter((movie) => movie !== action.payload) };
+    case 'ADD_ID_TO_FAVORITES':
+      return { ...favState, ...favState.favoritesId.push(action.payload) };
+    case 'REMOVE_ID_FROM_FAVORITES':
+      return { ...favState, favoritesId: favState.favoritesId.filter((movie) => movie !== action.payload) };
+
     default:
       return favState;
   }

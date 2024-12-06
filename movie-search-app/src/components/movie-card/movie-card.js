@@ -8,12 +8,14 @@ import { FavContext } from '../../state/state';
 
 export default function MovieCard({ info, genres }) {
   // console.log(info.id);
+  // console.log(info);
+
   const favContext = useContext(FavContext);
 
   const [favorite, setFavorite] = useState(false);
 
   const checkFavorites = () => {
-    if (favContext.favState.favorites.includes(info.id)) {
+    if (favContext.favState.favoritesId.includes(info.id)) {
       setFavorite(true);
     }
   };
@@ -21,13 +23,13 @@ export default function MovieCard({ info, genres }) {
   useEffect(checkFavorites, []);
 
   const favoriteHandler = () => {
-    if (favContext.favState.favorites.includes(info.id)) {
+    if (favContext.favState.favoritesId.includes(info.id)) {
       setFavorite(false);
-      favContext.favDispatch({ type: 'REMOVE_FROM_FAVORITES', payload: info.id });
+      favContext.favDispatch({ type: 'REMOVE_ID_FROM_FAVORITES', payload: info.id });
       // console.log('del ' + info.id);
     } else {
       setFavorite(true);
-      favContext.favDispatch({ type: 'ADD_TO_FAVORITES', payload: info.id });
+      favContext.favDispatch({ type: 'ADD_ID_TO_FAVORITES', payload: info.id });
       // console.log('add ' + info.id);
     }
   };
