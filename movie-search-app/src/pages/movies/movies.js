@@ -38,6 +38,7 @@ export default function Movies() {
       setMoviesInfo(data.results);
     } catch (error) {
       console.log('Невозможно получить данные о  фильмах!\n' + error);
+      console.log('Проверьте доступ к tmdb');
     }
   };
 
@@ -47,6 +48,7 @@ export default function Movies() {
       let resp = await fetch('https://api.themoviedb.org/3/genre/movie/list?language=en', options);
       let data = await resp.json();
       setGenresList(data.genres);
+      localStorage.setItem('genresList', JSON.stringify(data.genres));
     } catch (error) {
       console.log('Невозможно получить список жанров!\n' + error);
     }

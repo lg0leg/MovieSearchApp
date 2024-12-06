@@ -7,9 +7,6 @@ import Star from '../star/star';
 import { FavContext } from '../../state/state';
 
 export default function MovieCard({ info, genres }) {
-  // console.log(info.id);
-  // console.log(info);
-
   const favContext = useContext(FavContext);
 
   const [favorite, setFavorite] = useState(false);
@@ -22,23 +19,26 @@ export default function MovieCard({ info, genres }) {
 
   useEffect(checkFavorites, []);
 
+  //добавление/удаление файлов в избранное. обновление localStorage происходит в App
   const favoriteHandler = () => {
     if (favContext.favState.favoritesId.includes(info.id)) {
       setFavorite(false);
       favContext.favDispatch({ type: 'REMOVE_ID_FROM_FAVORITES', payload: info.id });
-      // console.log('del ' + info.id);
+      favContext.favDispatch({ type: 'REMOVE_ITEM_FROM_FAVORITES', payload: info.id });
     } else {
       setFavorite(true);
       favContext.favDispatch({ type: 'ADD_ID_TO_FAVORITES', payload: info.id });
-      // console.log('add ' + info.id);
+      favContext.favDispatch({ type: 'ADD_ITEM_TO_FAVORITES', payload: info });
     }
   };
 
   //получение названий жанров из списка id отдельного фильма
-  let genreTitles = info.genre_ids
-    .map((genID) => genres.find((obj) => obj.id === genID))
-    .map((val) => val?.name || '')
-    .join(', ');
+  let genreTitles = genres
+    ? info.genre_ids
+        .map((genID) => genres.find((obj) => obj.id === genID))
+        .map((val) => val?.name || '')
+        .join(', ')
+    : '';
 
   return (
     <div className="movie-card">

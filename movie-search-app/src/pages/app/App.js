@@ -13,6 +13,7 @@ function App() {
 
   useEffect(() => {
     localStorage.setItem('favoritesId', JSON.stringify(favState.favoritesId));
+    localStorage.setItem('favoritesInfo', JSON.stringify(favState.favoritesInfo));
   }, [favState]);
 
   return (

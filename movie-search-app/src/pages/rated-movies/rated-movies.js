@@ -3,10 +3,14 @@ import React, { useContext } from 'react';
 import norated from '../../assets/svg/loading.svg';
 import { useNavigate } from 'react-router-dom';
 import { FavContext } from '../../state/state';
+import MovieCard from '../../components/movie-card/movie-card';
+import './rated-movies.scss';
 
 export default function RatedMovies() {
   const favContext = useContext(FavContext);
   const navigate = useNavigate();
+
+  const genresLS = JSON.parse(localStorage.getItem('genresList'));
 
   return favContext.favState.favoritesId.length === 0 ? (
     <Center h="100vh">
@@ -30,11 +34,11 @@ export default function RatedMovies() {
     <Container fluid style={{ width: 1160, paddingLeft: 90, paddingRight: 90, paddingTop: 40, margin: 0 }}>
       <Title order={1}>Rated movies</Title>
       <Space h="40" />
-      <ul>
-        {favContext.favState.favoritesId.map((id) => (
-          <li key={id}>{id}</li>
+      <div className="favorites-container">
+        {favContext.favState.favoritesInfo.map((item) => (
+          <MovieCard key={item.id} info={item} genres={genresLS}></MovieCard>
         ))}
-      </ul>
+      </div>
     </Container>
   );
 }
