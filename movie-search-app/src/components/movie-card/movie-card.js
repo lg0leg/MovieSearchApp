@@ -17,22 +17,31 @@ export default function MovieCard({ info, genres }) {
   const checkFavorites = () => {
     if (favContext.favState.favoritesId.includes(info.id)) {
       setFavorite(true);
+      setRating(favContext.favState.favoritesRating.find((el) => el.itemId === info.id).itemRating);
     }
   };
-
   useEffect(checkFavorites, []);
 
-  //добавление/удаление файлов в избранное. обновление localStorage происходит в App
-  const favoriteHandler = () => {
-    if (favContext.favState.favoritesId.includes(info.id)) {
-      setFavorite(false);
-      favContext.favDispatch({ type: 'REMOVE_ID_FROM_FAVORITES', payload: info.id });
-      favContext.favDispatch({ type: 'REMOVE_ITEM_FROM_FAVORITES', payload: info.id });
-    } else {
+  const addItemToFavorites = () => {
+    const rt = { itemId: info.id, itemRating: rating };
+    if (!favContext.favState.favoritesId.includes(info.id)) {
       setFavorite(true);
       favContext.favDispatch({ type: 'ADD_ID_TO_FAVORITES', payload: info.id });
       favContext.favDispatch({ type: 'ADD_ITEM_TO_FAVORITES', payload: info });
+      favContext.favDispatch({ type: 'SET_RATING_FOR_ITEM', payload: rt });
+    } else {
+      //обновление уже существующей оценки
+      favContext.favDispatch({ type: 'REMOVE_RATING_FROM_ITEM', payload: info.id });
+      favContext.favDispatch({ type: 'SET_RATING_FOR_ITEM', payload: rt });
     }
+  };
+
+  const removeItemFromFavorites = () => {
+    setFavorite(false);
+    setRating(0);
+    favContext.favDispatch({ type: 'REMOVE_ID_FROM_FAVORITES', payload: info.id });
+    favContext.favDispatch({ type: 'REMOVE_ITEM_FROM_FAVORITES', payload: info.id });
+    favContext.favDispatch({ type: 'REMOVE_RATING_FROM_ITEM', payload: info.id });
   };
 
   //получение названий жанров из списка id отдельного фильма
@@ -50,10 +59,10 @@ export default function MovieCard({ info, genres }) {
         <h3>{info.original_title}</h3>
         <Rating className="movie-star-gap" value={rating} onChange={setRating} count="10" size="xl" />
         <Space h={20} />
-        <Button variant="filled" color="#9854f6">
+        <Button variant="filled" color="#9854f6" onClick={addItemToFavorites}>
           Save
         </Button>
-        <Button variant="transparent" color="#9854f6">
+        <Button variant="transparent" color="#9854f6" onClick={removeItemFromFavorites}>
           Remove rating
         </Button>
       </Modal>
@@ -63,7 +72,7 @@ export default function MovieCard({ info, genres }) {
         <div className="movie-card-inner">
           <h2 className="movie-card-title">{info.original_title}</h2>
           <p>{info.release_date.slice(0, 4)}</p>
-          <div className="movie-rating" onClick={open}>
+          <div className="movie-rating">
             <img src={star} alt="star" width={22} />
             <span>{info.vote_average.toFixed(1)}</span>
             <span>({info.vote_count})</span>
@@ -71,7 +80,7 @@ export default function MovieCard({ info, genres }) {
           <Space h={40} />
           <p>{genreTitles}</p>
         </div>
-        <div className="movie-star" onClick={favoriteHandler}>
+        <div className="movie-star" onClick={open}>
           <Star favorite={favorite} />
         </div>
       </div>

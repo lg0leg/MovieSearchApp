@@ -14,6 +14,7 @@ function App() {
   useEffect(() => {
     localStorage.setItem('favoritesId', JSON.stringify(favState.favoritesId));
     localStorage.setItem('favoritesInfo', JSON.stringify(favState.favoritesInfo));
+    localStorage.setItem('favoritesRating', JSON.stringify(favState.favoritesRating));
   }, [favState]);
 
   return (
