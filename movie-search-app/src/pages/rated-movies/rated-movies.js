@@ -1,5 +1,5 @@
-import { Button, Center, Container, Flex, Space, TextInput, Title } from '@mantine/core';
-import React, { useContext, useState } from 'react';
+import { Button, Center, Container, Flex, Pagination, Space, TextInput, Title } from '@mantine/core';
+import React, { useContext, useEffect, useState } from 'react';
 import norated from '../../assets/svg/loading.svg';
 import search from '../../assets/png/search.png';
 import { useNavigate } from 'react-router-dom';
@@ -14,12 +14,22 @@ export default function RatedMovies() {
   const genresLS = JSON.parse(localStorage.getItem('genresList'));
 
   const [searchQuery, setSearchQuery] = useState('');
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  let itemPerPage = 4;
+
+  useEffect(() => {
+    // console.log(Math.ceil(favContext.favState.favoritesId.length / itemPerPage));
+    // console.log(Math.ceil(favContext.favState.favoritesId.length));
+    setTotalPages(Math.ceil(favContext.favState.favoritesId.length / itemPerPage));
+  }, [favContext.favState.favoritesId.length, itemPerPage]);
 
   const searchHandler = (event) => {
     setSearchQuery(event.currentTarget.value);
   };
 
   const searchFilter = (item) => item.original_title.toLowerCase().includes(searchQuery.toLowerCase());
+  const pageFilter = (_, idx) => idx > (page - 1) * itemPerPage - 1 && idx < page * itemPerPage;
 
   return favContext.favState.favoritesId.length === 0 ? (
     <Center h="100vh">
@@ -57,9 +67,13 @@ export default function RatedMovies() {
       <Space h="40" />
       <div className="favorites-container">
         {searchQuery === ''
-          ? favContext.favState.favoritesInfo.map((item) => <MovieCard key={item.id} info={item} genres={genresLS}></MovieCard>)
-          : favContext.favState.favoritesInfo.filter(searchFilter).map((item) => <MovieCard key={item.id} info={item} genres={genresLS}></MovieCard>)}
+          ? favContext.favState.favoritesInfo.filter(pageFilter).map((item) => <MovieCard key={item.id} info={item} genres={genresLS}></MovieCard>)
+          : favContext.favState.favoritesInfo
+              .filter(searchFilter)
+              // .filter(pageFilter)
+              .map((item) => <MovieCard key={item.id} info={item} genres={genresLS}></MovieCard>)}
       </div>
+      <Pagination size={'lg'} defaultValue="1" radius="sm" color="rgb(152, 84, 246)" value={page} onChange={setPage} total={totalPages} />
     </Container>
   );
 }
