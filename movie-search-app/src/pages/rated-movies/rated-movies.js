@@ -18,18 +18,22 @@ export default function RatedMovies() {
   const [totalPages, setTotalPages] = useState(1);
   let itemPerPage = 4;
 
+  const searchFilter = (item) => item.original_title.toLowerCase().includes(searchQuery.toLowerCase());
+  const pageFilter = (_, idx) => idx > (page - 1) * itemPerPage - 1 && idx < page * itemPerPage;
+
   useEffect(() => {
-    // console.log(Math.ceil(favContext.favState.favoritesId.length / itemPerPage));
-    // console.log(Math.ceil(favContext.favState.favoritesId.length));
-    setTotalPages(Math.ceil(favContext.favState.favoritesId.length / itemPerPage));
-  }, [favContext.favState.favoritesId.length, itemPerPage]);
+    searchQuery === ''
+      ? setTotalPages(Math.ceil(favContext.favState.favoritesId.length / itemPerPage))
+      : setTotalPages(Math.ceil(favContext.favState.favoritesInfo.filter(searchFilter).length / itemPerPage));
+  }, [favContext.favState.favoritesId.length, favContext.favState.favoritesInfo, itemPerPage, searchQuery]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [totalPages]);
 
   const searchHandler = (event) => {
     setSearchQuery(event.currentTarget.value);
   };
-
-  const searchFilter = (item) => item.original_title.toLowerCase().includes(searchQuery.toLowerCase());
-  const pageFilter = (_, idx) => idx > (page - 1) * itemPerPage - 1 && idx < page * itemPerPage;
 
   return favContext.favState.favoritesId.length === 0 ? (
     <Center h="100vh">
@@ -70,7 +74,7 @@ export default function RatedMovies() {
           ? favContext.favState.favoritesInfo.filter(pageFilter).map((item) => <MovieCard key={item.id} info={item} genres={genresLS}></MovieCard>)
           : favContext.favState.favoritesInfo
               .filter(searchFilter)
-              // .filter(pageFilter)
+              .filter(pageFilter)
               .map((item) => <MovieCard key={item.id} info={item} genres={genresLS}></MovieCard>)}
       </div>
       <Pagination size={'lg'} defaultValue="1" radius="sm" color="rgb(152, 84, 246)" value={page} onChange={setPage} total={totalPages} />
