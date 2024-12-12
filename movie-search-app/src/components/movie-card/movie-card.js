@@ -6,9 +6,12 @@ import { Button, Modal, Rating, Space } from '@mantine/core';
 import Star from '../star/star';
 import { FavContext } from '../../state/state';
 import { useDisclosure } from '@mantine/hooks';
+import { useNavigate } from 'react-router-dom';
 
 export default function MovieCard({ info, genres }) {
   const favContext = useContext(FavContext);
+  const navigate = useNavigate();
+  const moviePath = `/movies/:${info.id}`;
 
   const [favorite, setFavorite] = useState(false);
   const [opened, { open, close }] = useDisclosure(false);
@@ -66,7 +69,12 @@ export default function MovieCard({ info, genres }) {
           Remove rating
         </Button>
       </Modal>
-      <div className="movie-card">
+      <div
+        className="movie-card"
+        onClick={() => {
+          navigate(moviePath);
+        }}
+      >
         {/* <img className="movie-image" src={`https://image.tmdb.org/t/p/original/${info.poster_path}`} alt={`${info.original_title} poster`} /> */}
         <img className="movie-image" src={noPoster} alt="noPoster" />
         <div className="movie-card-inner">
@@ -80,7 +88,13 @@ export default function MovieCard({ info, genres }) {
           <Space h={40} />
           <p>{genreTitles}</p>
         </div>
-        <div className="movie-star" onClick={open}>
+        <div
+          className="movie-star"
+          onClick={(e) => {
+            e.stopPropagation();
+            open();
+          }}
+        >
           <Star favorite={favorite} />
         </div>
       </div>

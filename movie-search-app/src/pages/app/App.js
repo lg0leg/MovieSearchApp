@@ -4,6 +4,7 @@ import logo from '../../assets/svg/logo.svg';
 import NotFoundPage from '../404/404';
 import RatedMovies from '../rated-movies/rated-movies';
 import Movies from '../movies/movies';
+import Movie from '../movie/movie';
 import { AppShell, Flex, Space, Title } from '@mantine/core';
 import { useEffect, useReducer } from 'react';
 import { favReducer, initialFavState, FavContext } from '../../state/state';
@@ -42,6 +43,7 @@ function App() {
         <FavContext.Provider value={{ favDispatch, favState }}>
           <Routes>
             <Route path="movies" element={<Movies />} />
+            <Route path="movies/:id" element={<Movie />} />
             <Route path="rated-movies" element={<RatedMovies />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
