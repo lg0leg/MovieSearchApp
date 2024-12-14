@@ -72,7 +72,7 @@ export default function MovieCard({ info, genres }) {
       <div
         className="movie-card"
         onClick={() => {
-          navigate(moviePath);
+          navigate(moviePath, { state: info });
         }}
       >
         {/* <img className="movie-image" src={`https://image.tmdb.org/t/p/original/${info.poster_path}`} alt={`${info.original_title} poster`} /> */}
