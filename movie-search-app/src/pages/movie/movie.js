@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import './movie.scss';
 import { useLocation, useParams } from 'react-router-dom';
-import { AspectRatio, Container, Flex, Grid, Group, Image, SimpleGrid, Space, Stack, Text, Title } from '@mantine/core';
+import { AspectRatio, Container, Divider, Flex, Grid, Group, Image, Space, Stack, Text, Title } from '@mantine/core';
 import star from '../../assets/svg/star.svg';
 import noPoster from '../../assets/png/noPoster.png';
+import noVideo from '../../assets/png/noVideo.png';
 import { headers } from '../../utils/api';
 
 export default function Movie() {
@@ -15,6 +16,8 @@ export default function Movie() {
     budget: '',
     revenue: '',
     genres: [],
+    overview: '',
+    video: false,
   });
 
   const fetchOptions = {
@@ -55,13 +58,12 @@ export default function Movie() {
   const genres = movieInfo.genres.map((item) => item.name).join(', ');
 
   return (
-    <Container fluid style={{ width: 1160, paddingLeft: 90, paddingRight: 90, paddingTop: 40, margin: 0 }}>
-      <Group className="movie-info-card" align="flex-start">
+    <Container style={{ paddingTop: 40, paddingBottom: 40 }}>
+      <Group className="movie-info-card" align="flex-start" w={800}>
         <AspectRatio ratio={250 / 352} w={250}>
-          <Image src={`https://image.tmdb.org/t/p/original/${location.state.poster_path}`} alt={`${location.state.original_title} poster`} />
-          {/* <Image src={noPoster}></Image> */}
+          <Image src={`https://image.tmdb.org/t/p/original/${location.state.poster_path}`} fallbackSrc={noPoster} alt={`${location.state.original_title} poster`} />
         </AspectRatio>
-        <Stack justify="space-between" h={352} maw={442}>
+        <Stack justify="space-between" h={352}>
           <Flex direction="column">
             <Title order={2} c={'#9854f6'}>
               {location.state.original_title}
@@ -75,39 +77,59 @@ export default function Movie() {
               <Text c={'#7b7c88'}>({location.state.vote_count})</Text>
             </Flex>
           </Flex>
-          <SimpleGrid cols={2}>
-            <Text c={'#7b7c88'}>Duration</Text>
-            <Text>{duration}</Text>
-            <Text c={'#7b7c88'}>Premiere</Text>
-            <Text>{premiereDate}</Text>
-            <Text c={'#7b7c88'}>Budget</Text>
-            <Text>{budget}</Text>
-            <Text c={'#7b7c88'}>Gross worldwide</Text>
-            <Text>{revenue}</Text>
-            <Text c={'#7b7c88'}>Genres</Text>
-            <Text>{genres}</Text>
-          </SimpleGrid>
-          {/* <Grid cols={2}>
-            <Grid.Col span="content">
-              <Text c={'#7b7c88'}>Duration</Text>
-              <Text c={'#7b7c88'}>Premiere</Text>
-              <Text c={'#7b7c88'}>Budget</Text>
-              <Text c={'#7b7c88'}>Gross worldwide</Text>
-              <Text c={'#7b7c88'}>Genres</Text>
+          <Grid cols={2} w={442} gutter>
+            <Grid.Col span={4}>
+              <Flex direction="column" gap={12}>
+                <Text c={'#7b7c88'}>Duration</Text>
+                <Text c={'#7b7c88'}>Premiere</Text>
+                <Text c={'#7b7c88'}>Budget</Text>
+                <Text c={'#7b7c88'}>Gross worldwide</Text>
+                <Text c={'#7b7c88'}>Genres</Text>
+              </Flex>
             </Grid.Col>
-            <Grid.Col span={8}>
-              <Text>{duration}</Text>
-              <Text>{premiereDate}</Text>
-              <Text>{budget}</Text>
-              <Text>{revenue}</Text>
-              <Text>{genres}</Text>
+            <Grid.Col span={'auto'}>
+              <Flex direction="column" gap={12}>
+                <Text>{duration}</Text>
+                <Text>{premiereDate}</Text>
+                <Text>{budget}</Text>
+                <Text>{revenue}</Text>
+                <Text>{genres}</Text>
+              </Flex>
             </Grid.Col>
-          </Grid> */}
+          </Grid>
         </Stack>
       </Group>
       <Space h={20} />
-      <Flex className="movie-info-card">
-        <Title order={3}>Trailer</Title>
+      <Flex className="movie-info-card" direction="column" w={800}>
+        {movieInfo.video ? (
+          <>
+            <Title order={3}>Trailer</Title>
+            <Divider my="md" color={'#d5d6dc'} />
+          </>
+        ) : null}
+        {movieInfo.overview ? (
+          <>
+            <Title order={3}>Description</Title>
+            <Space h={16} />
+            <Text maw={725}>{movieInfo.overview}</Text>
+            <Divider my="md" color={'#d5d6dc'} />
+          </>
+        ) : null}
+        {movieInfo.production_companies ? (
+          <>
+            <Title order={3} pb={16}>
+              Production
+            </Title>
+            <Flex direction="column" gap={12}>
+              {movieInfo.production_companies.map((item) => (
+                <Flex align={'center'} gap={8} key={item.id}>
+                  <Image fit="contain" h={40} w={40} radius={'50%'} src={`https://image.tmdb.org/t/p/original/${item.logo_path}`} fallbackSrc={noVideo} alt={`${item.name} poster`} />
+                  <Text fw={700}>{item.name}</Text>
+                </Flex>
+              ))}
+            </Flex>
+          </>
+        ) : null}
       </Flex>
     </Container>
   );
