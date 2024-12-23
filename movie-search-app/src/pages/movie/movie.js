@@ -6,6 +6,7 @@ import star from '../../assets/svg/star.svg';
 import noPoster from '../../assets/png/noPoster.png';
 import noVideo from '../../assets/png/noVideo.png';
 import { headers } from '../../utils/api';
+import Favorites from '../../components/favorites/favorites';
 
 export default function Movie() {
   const params = useParams();
@@ -98,6 +99,9 @@ export default function Movie() {
             </Grid.Col>
           </Grid>
         </Stack>
+        <div className="movie-info-favorite">
+          <Favorites info={location.state} />
+        </div>
       </Group>
       <Space h={20} />
       <Flex className="movie-info-card" direction="column" w={800}>

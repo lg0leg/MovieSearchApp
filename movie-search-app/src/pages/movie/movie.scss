@@ -3,3 +3,11 @@
   background-color: #fff;
   border-radius: 10px;
 }
+
+.movie-info-favorite {
+  cursor: pointer;
+}
+
+.movie-info-favorite:hover {
+  transform: scale(1.07);
+}
