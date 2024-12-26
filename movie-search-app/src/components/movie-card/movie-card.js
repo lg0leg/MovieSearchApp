@@ -1,7 +1,7 @@
 import './movie-card.scss';
 import star from '../../assets/svg/star.svg';
 import noPoster from '../../assets/png/noPoster.png';
-import { Space } from '@mantine/core';
+import { Image, Space } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 import Favorites from '../favorites/favorites';
 
@@ -25,8 +25,7 @@ export default function MovieCard({ info, genres }) {
           navigate(moviePath, { state: info });
         }}
       >
-        {/* <img className="movie-image" src={`https://image.tmdb.org/t/p/original/${info.poster_path}`} alt={`${info.original_title} poster`} /> */}
-        <img className="movie-image" src={noPoster} alt="noPoster" />
+        <Image className="movie-image" src={`https://image.tmdb.org/t/p/original/${info.poster_path}`} fallbackSrc={noPoster} alt={`${info.original_title} poster`} />
         <div className="movie-card-inner">
           <h2 className="movie-card-title">{info.original_title}</h2>
           <p>{info.release_date.slice(0, 4)}</p>
