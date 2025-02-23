@@ -19,7 +19,10 @@ export default function Movie() {
     genres: [],
     overview: '',
     video: false,
+    videos: { results: [] },
   });
+
+  const [trailer, setTrailer] = useState(false);
 
   const fetchOptions = {
     method: 'GET',
@@ -27,7 +30,8 @@ export default function Movie() {
   };
 
   const getMovieInfo = async () => {
-    const baseURL = `https://api.themoviedb.org/3/movie/${params.id.slice(1)}?language=en-US`;
+    // const baseURL = `https://api.themoviedb.org/3/movie/${params.id.slice(1)}?language=en-US`;
+    const baseURL = `https://api.themoviedb.org/3/movie/${params.id.slice(1)}?append_to_response=videos`;
     try {
       let resp = await fetch(baseURL, fetchOptions);
       let data = await resp.json();
@@ -38,13 +42,32 @@ export default function Movie() {
     }
   };
 
+  const checkTrailer = () => {
+    if (movieInfo.videos.results.length > 0) {
+      if (movieInfo.videos.results.filter((mov) => mov.name === 'Official Trailer').length > 0) {
+        setTrailer(`https://www.youtube.com/embed/${movieInfo.videos.results.filter((mov) => mov.name === 'Official Trailer')[0].key}`);
+      } else {
+        setTrailer(`https://www.youtube.com/embed/${movieInfo.videos.results.filter((mov) => mov.type === 'Trailer')[0].key}`);
+      }
+    }
+  };
+
   useEffect(() => {
     getMovieInfo();
   }, []);
 
+  useEffect(() => {
+    checkTrailer();
+  }, [movieInfo]);
+
   // useEffect(() => {
+  // console.log(movieInfo.videos.results ? movieInfo.videos.results.filter((mov) => mov.type === 'Trailer') : 'loading...');
   //   console.log(movieInfo);
   // }, [movieInfo]);
+
+  // useEffect(() => {
+  //   console.log(trailer);
+  // }, [trailer]);
 
   const dateOptions = {
     year: 'numeric',
@@ -105,9 +128,20 @@ export default function Movie() {
       </Group>
       <Space h={20} />
       <Flex className="movie-info-card" direction="column" w={800}>
-        {movieInfo.video ? (
+        {trailer ? (
           <>
             <Title order={3}>Trailer</Title>
+            <Space h={16} />
+            <iframe
+              className="movie-info-trailer"
+              width="500"
+              height="281"
+              src={trailer}
+              title="YouTube video player"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            ></iframe>
             <Divider my="md" color={'#d5d6dc'} />
           </>
         ) : null}
