@@ -5,12 +5,25 @@ import NotFoundPage from '../404/404';
 import RatedMovies from '../rated-movies/rated-movies';
 import Movies from '../movies/movies';
 import Movie from '../movie/movie';
-import { AppShell, Flex, Space, Title } from '@mantine/core';
-import { useEffect, useReducer } from 'react';
+import { Alert, AppShell, Badge, Flex, Space, Title } from '@mantine/core';
+import { useEffect, useReducer, useState } from 'react';
 import { favReducer, initialFavState, FavContext } from '../../state/state';
 
 function App() {
   const [favState, favDispatch] = useReducer(favReducer, initialFavState);
+
+  const [visibleAlert, setVisibleAlert] = useState(true);
+
+  const hideAlert = () => {
+    localStorage.setItem('visibleAlertLS', 'hidden');
+    setVisibleAlert(false);
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem('visibleAlertLS')) {
+      setVisibleAlert(false);
+    }
+  }, []);
 
   useEffect(() => {
     localStorage.setItem('favoritesId', JSON.stringify(favState.favoritesId));
@@ -38,6 +51,22 @@ function App() {
             Rated movies
           </NavLink>
         </Flex>
+        <Alert
+          className="no-access-alert"
+          variant="light"
+          color="blue"
+          withCloseButton
+          closeButtonLabel="Dismiss"
+          title="Список фильмов пустой?"
+          hidden={!visibleAlert}
+          onClose={() => setVisibleAlert(false)}
+        >
+          Сервис TMDB может быть недоступен в некоторых регионах. Может быть, стоит попробовать открыть сайт по-другому?🤔
+          <Space h="10" />
+          <Badge className="pointer" variant="light" fullWidth size="sm" radius="sm" onClick={hideAlert}>
+            Больше не показывать
+          </Badge>
+        </Alert>
       </AppShell.Navbar>
       <AppShell.Main style={{ backgroundColor: '#f5f5f6' }}>
         <FavContext.Provider value={{ favDispatch, favState }}>
