@@ -5,8 +5,8 @@ import { AspectRatio, Container, Divider, Flex, Grid, Group, Image, Space, Stack
 import star from '../../assets/svg/star.svg';
 import noPoster from '../../assets/png/noPoster.png';
 import noVideo from '../../assets/png/noVideo.png';
-import { headers } from '../../utils/api';
 import Favorites from '../../components/favorites/favorites';
+import { getDataFromApi } from '../../api/server-api';
 
 export default function Movie() {
   const params = useParams();
@@ -24,17 +24,12 @@ export default function Movie() {
 
   const [trailer, setTrailer] = useState(false);
 
-  const fetchOptions = {
-    method: 'GET',
-    headers: headers,
-  };
-
   const getMovieInfo = async () => {
     // const baseURL = `https://api.themoviedb.org/3/movie/${params.id.slice(1)}?language=en-US`;
     const baseURL = `https://api.themoviedb.org/3/movie/${params.id.slice(1)}?append_to_response=videos`;
     try {
-      let resp = await fetch(baseURL, fetchOptions);
-      let data = await resp.json();
+      const data = await getDataFromApi(baseURL);
+
       setMovieInfo(data);
     } catch (error) {
       console.log('Невозможно получить информацию о фильме!\n' + error);

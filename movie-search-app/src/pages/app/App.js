@@ -6,18 +6,36 @@ import RatedMovies from '../rated-movies/rated-movies';
 import Movies from '../movies/movies';
 import Movie from '../movie/movie';
 import { Alert, AppShell, Badge, Flex, Space, Title } from '@mantine/core';
-import { useEffect, useReducer, useState } from 'react';
+import { createContext, useEffect, useReducer, useState } from 'react';
 import { favReducer, initialFavState, FavContext } from '../../state/state';
 
-function App() {
-  const [favState, favDispatch] = useReducer(favReducer, initialFavState);
+export const APIContext = createContext();
 
+function App() {
+  const [apiKey, setApiKey] = useState(null);
+  const [favState, favDispatch] = useReducer(favReducer, initialFavState);
   const [visibleAlert, setVisibleAlert] = useState(true);
+
+  const callBackendAPI = async () => {
+    const response = await fetch('/express_backend');
+    const body = await response.json();
+
+    if (response.status !== 200) {
+      throw Error(body.message);
+    }
+    return body;
+  };
 
   const hideAlert = () => {
     localStorage.setItem('visibleAlertLS', 'hidden');
     setVisibleAlert(false);
   };
+
+  useEffect(() => {
+    callBackendAPI()
+      .then((res) => setApiKey(res.key))
+      .catch((err) => console.log(err));
+  }, []);
 
   useEffect(() => {
     if (localStorage.getItem('visibleAlertLS')) {
@@ -69,14 +87,16 @@ function App() {
         </Alert>
       </AppShell.Navbar>
       <AppShell.Main style={{ backgroundColor: '#f5f5f6' }}>
-        <FavContext.Provider value={{ favDispatch, favState }}>
-          <Routes>
-            <Route path="movies" element={<Movies />} />
-            <Route path="movies/:id" element={<Movie />} />
-            <Route path="rated-movies" element={<RatedMovies />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </FavContext.Provider>
+        <APIContext.Provider value={apiKey}>
+          <FavContext.Provider value={{ favDispatch, favState }}>
+            <Routes>
+              <Route path="movies" element={<Movies />} />
+              <Route path="movies/:id" element={<Movie />} />
+              <Route path="rated-movies" element={<RatedMovies />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </FavContext.Provider>
+        </APIContext.Provider>
       </AppShell.Main>
     </AppShell>
   );

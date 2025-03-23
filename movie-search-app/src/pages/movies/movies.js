@@ -3,12 +3,7 @@ import React, { useEffect, useState } from 'react';
 import './movies.scss';
 import lookfor from '../../assets/svg/lookfor.svg';
 import FilmList from '../../components/film-list/film-list';
-import { headers } from '../../utils/api';
-
-const options = {
-  method: 'GET',
-  headers: headers,
-};
+import { getDataFromApi } from '../../api/server-api';
 
 export default function Movies() {
   const [genresList, setGenresList] = useState([]);
@@ -32,8 +27,7 @@ export default function Movies() {
     let gens = genres ? `&with_genres=${genresList.find((val) => val.name === genres).id}` : '';
     let query = `${baseURL}&page=${page}${year}&sort_by=${sort}${rf}${rt}${gens}`;
     try {
-      let resp = await fetch(query, options);
-      let data = await resp.json();
+      const data = await getDataFromApi(query);
       data.total_pages > 500 ? setTotalPages(500) : setTotalPages(data.total_pages);
       setMoviesInfo(data.results);
     } catch (error) {
@@ -45,8 +39,7 @@ export default function Movies() {
   // получение массива доступных жанров вида {"id": 28,"name": "Action"}
   const getGenres = async () => {
     try {
-      let resp = await fetch('https://api.themoviedb.org/3/genre/movie/list?language=en', options);
-      let data = await resp.json();
+      const data = await getDataFromApi('https://api.themoviedb.org/3/genre/movie/list?language=en');
       setGenresList(data.genres);
       localStorage.setItem('genresList', JSON.stringify(data.genres));
     } catch (error) {
