@@ -71,6 +71,7 @@ function App() {
       <AppShell.Main style={{ backgroundColor: '#f5f5f6' }}>
         <FavContext.Provider value={{ favDispatch, favState }}>
           <Routes>
+            <Route path="/" element={<Movies />} />
             <Route path="movies" element={<Movies />} />
             <Route path="movies/:id" element={<Movie />} />
             <Route path="rated-movies" element={<RatedMovies />} />

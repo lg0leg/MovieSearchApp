@@ -2,6 +2,7 @@
   "name": "movie-search-app",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://lg0leg.github.io/MovieSearchApp/",
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@mantine/core": "^7.9.1",
@@ -10,6 +11,7 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "gh-pages": "^6.3.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.23.1",
@@ -19,9 +21,11 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && shx cp build/index.html build/404.html",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -40,5 +44,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "shx": "^0.4.0"
   }
 }
