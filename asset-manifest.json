@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/movie-search-app/static/css/main.f54ff566.css",
-    "main.js": "/movie-search-app/static/js/main.c4a06127.js",
-    "static/media/lookfor.svg": "/movie-search-app/static/media/lookfor.10481643c3da520dda75af667883f371.svg",
-    "static/media/loading.svg": "/movie-search-app/static/media/loading.716c425bfde6c09c8031896b5fdd596e.svg",
-    "static/media/logo.svg": "/movie-search-app/static/media/logo.be5ef7c01a2758f09dca84b4683d55ac.svg",
-    "index.html": "/movie-search-app/index.html",
-    "static/media/star.svg": "/movie-search-app/static/media/star.56ceffd8da34eb97a2e46824b899ddf9.svg",
-    "main.f54ff566.css.map": "/movie-search-app/static/css/main.f54ff566.css.map",
-    "main.c4a06127.js.map": "/movie-search-app/static/js/main.c4a06127.js.map"
+    "main.css": "/MovieSearchApp/static/css/main.f54ff566.css",
+    "main.js": "/MovieSearchApp/static/js/main.80331e27.js",
+    "static/media/lookfor.svg": "/MovieSearchApp/static/media/lookfor.10481643c3da520dda75af667883f371.svg",
+    "static/media/loading.svg": "/MovieSearchApp/static/media/loading.716c425bfde6c09c8031896b5fdd596e.svg",
+    "static/media/logo.svg": "/MovieSearchApp/static/media/logo.be5ef7c01a2758f09dca84b4683d55ac.svg",
+    "index.html": "/MovieSearchApp/index.html",
+    "static/media/star.svg": "/MovieSearchApp/static/media/star.56ceffd8da34eb97a2e46824b899ddf9.svg",
+    "main.f54ff566.css.map": "/MovieSearchApp/static/css/main.f54ff566.css.map",
+    "main.80331e27.js.map": "/MovieSearchApp/static/js/main.80331e27.js.map"
   },
   "entrypoints": [
     "static/css/main.f54ff566.css",
-    "static/js/main.c4a06127.js"
+    "static/js/main.80331e27.js"
   ]
 }
